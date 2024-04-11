@@ -2,9 +2,9 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { Row } from "react-bootstrap";
+import AlertBanner from "../common/AlertBanner";
 import ScoopOption from "./ScoopOption";
 import ToppingOption from "./ToppingOption";
-import AlertBanner from "../common/AlertBanner";
 
 Options.propTypes = {
   optionType: PropTypes.string,
