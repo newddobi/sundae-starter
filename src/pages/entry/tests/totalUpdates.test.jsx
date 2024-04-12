@@ -1,7 +1,7 @@
-import { render, screen } from "@testing-library/react";
+// import { render, screen } from "@testing-library/react";
+import { render, screen } from "../../../test-utils/testing-library-utils";
 import userEvent from "@testing-library/user-event";
 import Options from "../Options";
-import { expect } from "vitest";
 
 test("update scoop subtotal when scoops change", async () => {
   const user = userEvent.setup();
@@ -29,5 +29,5 @@ test("update scoop subtotal when scoops change", async () => {
 
   await user.clear(chocolateInput);
   await user.type(chocolateInput, "2");
-  expect(chocolateInput).toHaveTextContent("6.00");
+  expect(scoopsSubtotal).toHaveTextContent("6.00");
 });
