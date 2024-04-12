@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import { pricePerItem } from "../constants";
+import { pricePerItem } from "../constant";
 
 const OrderDetails = createContext();
 
