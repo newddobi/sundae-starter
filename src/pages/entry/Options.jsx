@@ -2,7 +2,7 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { Row } from "react-bootstrap";
-import pricePerItem from "../../constant";
+import { pricePerItem } from "../../constant";
 import { useOrderDetails } from "../../context/OrderDetails";
 import { formatCurrency } from "../../utilities";
 import AlertBanner from "../common/AlertBanner";

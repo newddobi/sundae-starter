@@ -1,33 +1,17 @@
 import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
 import { useOrderDetails } from "../../context/OrderDetails";
-import PropTypes from "prop-types";
 
-ScoopOption.propTypes = {
-  name: PropTypes.string,
-  imagePath: PropTypes.string,
-};
-
-export default function ScoopOption({ name, imagePath }) {
+export default function ScoopOptions({ name, imagePath }) {
   const { updateItemCount } = useOrderDetails();
   const handleChange = (e) =>
     updateItemCount(name, parseInt(e.target.value), "scoops");
 
   return (
-    <Col
-      xs={12}
-      sm={6}
-      md={4}
-      lg={3}
-      style={{
-        textAlign: "center",
-      }}
-    >
+    <Col xs={12} sm={6} md={4} lg={3} style={{ textAlign: "center" }}>
       <img
-        style={{
-          width: "75%",
-        }}
+        style={{ width: "75%" }}
         src={`http://localhost:3030/${imagePath}`}
         alt={`${name} scoop`}
       />
