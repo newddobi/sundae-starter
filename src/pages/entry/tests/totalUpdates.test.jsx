@@ -2,7 +2,7 @@
 import { render, screen } from "../../../test-utils/testing-library-utils";
 import userEvent from "@testing-library/user-event";
 import Options from "../Options";
-import { expect, test } from "vitest";
+import { describe, expect, test } from "vitest";
 
 test("update scoop subtotal when scoops change", async () => {
   const user = userEvent.setup();
@@ -68,4 +68,11 @@ test("update topping subtotal when topping change", async () => {
   // Cherries 토핑 제거하고 총합 확인
   await user.click(cherriesCheckbox);
   expect(toppingsSubtotal).toHaveTextContent("3.00");
+});
+
+describe("grand total", () => {
+  test("grand total starts at $0.00", () => {});
+  test("grand total updates properly if scoop is added first", () => {});
+  test("grand total updates properly if topping is added first", () => {});
+  test("grand total updates properly if item is removed", () => {});
 });
