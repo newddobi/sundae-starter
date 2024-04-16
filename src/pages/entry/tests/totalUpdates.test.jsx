@@ -3,6 +3,7 @@ import { render, screen } from "../../../test-utils/testing-library-utils";
 import userEvent from "@testing-library/user-event";
 import Options from "../Options";
 import { describe, expect, test } from "vitest";
+import OrderEntry from "../OrderEntry";
 
 test("update scoop subtotal when scoops change", async () => {
   const user = userEvent.setup();
@@ -71,8 +72,55 @@ test("update topping subtotal when topping change", async () => {
 });
 
 describe("grand total", () => {
-  test("grand total starts at $0.00", () => {});
-  test("grand total updates properly if scoop is added first", () => {});
-  test("grand total updates properly if topping is added first", () => {});
+  test("grand total starts at $0.00", () => {
+    render(<OrderEntry />);
+
+    const grandTotal = screen.getByRole("heading", {
+      name: /Grand total: \$/i,
+    });
+
+    expect(grandTotal).toHaveTextContent("0.00");
+  });
+
+  test("grand total updates properly if scoop is added first", async () => {
+    const user = userEvent.setup();
+    render(<OrderEntry />);
+    render(<Options optionType="scoops" />);
+
+    const grandTotal = screen.getByRole("heading", {
+      name: /Grand total: \$/i,
+    });
+
+    // 바닐라 1스쿱 추가
+    const vanillaInput = await screen.findByRole("spinbutton", {
+      name: "Vanilla",
+    });
+
+    // clear는 매번 해줘야할까?
+    await user.clear(vanillaInput);
+    await user.type(vanillaInput, "1");
+    expect(grandTotal).toHaveTextContent("2.00");
+  });
+
+  // 하나만 디버깅 자세히 하는 방법 알아내야함
+  test.only("grand total updates properly if topping is added first", async () => {
+    const user = userEvent.setup();
+    render(<OrderEntry />);
+    render(<Options optionType="toppings" />);
+
+    const grandTotal = screen.getByRole("heading", {
+      name: /Grand total: \$/i,
+    });
+
+    // Cherries 토핑 추가
+    const cherriesCheckbox = await screen.findByRole("checkbox", {
+      name: "Cherries",
+    });
+
+    await user.click(cherriesCheckbox);
+
+    expect(grandTotal).toHaveTextContent("1.50");
+  });
+
   test("grand total updates properly if item is removed", () => {});
 });
