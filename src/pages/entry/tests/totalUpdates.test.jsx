@@ -85,7 +85,6 @@ describe("grand total", () => {
   test("grand total updates properly if scoop is added first", async () => {
     const user = userEvent.setup();
     render(<OrderEntry />);
-    render(<Options optionType="scoops" />);
 
     const grandTotal = screen.getByRole("heading", {
       name: /Grand total: \$/i,
@@ -96,17 +95,27 @@ describe("grand total", () => {
       name: "Vanilla",
     });
 
-    // clear는 매번 해줘야할까?
+    // Study: clear는 매번 해줘야할까?
     await user.clear(vanillaInput);
     await user.type(vanillaInput, "1");
     expect(grandTotal).toHaveTextContent("2.00");
+
+    // Cherries 토핑 추가
+    // "Vanilla"에서 await를 붙였더라도 여기서 또 붙여줘야 한다.
+    // 둘은 서로 다른 Axios 호출이라 어느 쪽이 먼저 도착할지 모른다.
+    const cherriesCheckbox = await screen.findByRole("checkbox", {
+      name: "Cherries",
+    });
+
+    await user.click(cherriesCheckbox);
+
+    expect(grandTotal).toHaveTextContent("3.50");
   });
 
-  // 하나만 디버깅 자세히 하는 방법 알아내야함
-  test.only("grand total updates properly if topping is added first", async () => {
+  // Todo: 하나만 디버깅 자세히 하는 방법 알아내야함
+  test("grand total updates properly if topping is added first", async () => {
     const user = userEvent.setup();
     render(<OrderEntry />);
-    render(<Options optionType="toppings" />);
 
     const grandTotal = screen.getByRole("heading", {
       name: /Grand total: \$/i,
@@ -120,7 +129,46 @@ describe("grand total", () => {
     await user.click(cherriesCheckbox);
 
     expect(grandTotal).toHaveTextContent("1.50");
+
+    // 바닐라 1스쿱 추가
+    const vanillaInput = await screen.findByRole("spinbutton", {
+      name: "Vanilla",
+    });
+
+    await user.clear(vanillaInput);
+    await user.type(vanillaInput, "1");
+    expect(grandTotal).toHaveTextContent("3.50");
   });
 
-  test("grand total updates properly if item is removed", () => {});
+  test("grand total updates properly if item is removed", async () => {
+    const user = userEvent.setup();
+    render(<OrderEntry />);
+
+    const grandTotal = screen.getByRole("heading", {
+      name: /Grand total: \$/i,
+    });
+
+    // 바닐라 2스쿱 추가
+    const vanillaInput = await screen.findByRole("spinbutton", {
+      name: "Vanilla",
+    });
+
+    await user.clear(vanillaInput);
+    await user.type(vanillaInput, "2");
+
+    // grand total은 4.00, 위의 테스트에서 이미 검증했기 때문에 예상은 하되 단언은 하지 않는다.
+
+    // Cherries 토핑 추가
+    const cherriesCheckbox = await screen.findByRole("checkbox", {
+      name: "Cherries",
+    });
+
+    await user.click(cherriesCheckbox);
+
+    // 바닐라 1스쿱 제거
+    await user.clear(vanillaInput);
+    await user.type(vanillaInput, "1");
+
+    expect(grandTotal).toHaveTextContent("3.50");
+  });
 });
