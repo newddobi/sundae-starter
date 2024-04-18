@@ -73,13 +73,15 @@ test("update topping subtotal when topping change", async () => {
 
 describe("grand total", () => {
   test("grand total starts at $0.00", () => {
-    render(<OrderEntry />);
-
+    const { unmount } = render(<OrderEntry />);
     const grandTotal = screen.getByRole("heading", {
       name: /Grand total: \$/i,
     });
-
     expect(grandTotal).toHaveTextContent("0.00");
+
+    // unmount 호출 후 Options의 클린업 함수에서 네트워크 호출 중단 로직 실행
+    // 이 모든 과정은 테스트 함수가 종료되기 전에 처리되기 때문에, act에 감싸지 않았다는 오류가 발생하지 않는다.
+    unmount();
   });
 
   test("grand total updates properly if scoop is added first", async () => {
