@@ -1,5 +1,6 @@
 import { http, HttpResponse, delay } from "msw";
 
+// Question: Classicist or Mockist?
 export const handlers = [
   http.get("http://localhost:3030/scoops", () => {
     return HttpResponse.json([

@@ -114,7 +114,10 @@ describe("grand total", () => {
     expect(grandTotal).toHaveTextContent("3.50");
   });
 
-  // Todo: 하나만 디버깅 자세히 하는 방법 알아내야함
+  // scree.debug()를 사용하면 테스트 결과에 해당 시점의 화면, 즉 DOM이 출력된다. debug()는 특정 요소를 찾거나 찾지 못하는 이유를 파악할 때 유용하다
+  // logRoles를 이용해서 DOM에 있는 역할들을 볼 수 있다.
+  // const { container } = render(<App/>);
+  // logRoles(container)
   test("grand total updates properly if topping is added first", async () => {
     const user = userEvent.setup();
     render(<OrderEntry />);
