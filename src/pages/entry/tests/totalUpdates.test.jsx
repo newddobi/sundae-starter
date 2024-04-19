@@ -97,7 +97,7 @@ describe("grand total", () => {
       name: "Vanilla",
     });
 
-    // Study: clear는 매번 해줘야할까?
+    // Question: clear는 매번 해줘야할까?
     await user.clear(vanillaInput);
     await user.type(vanillaInput, "1");
     expect(grandTotal).toHaveTextContent("2.00");
