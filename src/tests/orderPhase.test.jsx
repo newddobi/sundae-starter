@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen } from "../test-utils/testing-library-utils";
 import userEvent from "@testing-library/user-event";
 import App from "../App";
 
@@ -29,6 +29,11 @@ test("order phases for happy path", async () => {
   await user.click(orderNowButton);
 
   // 주문 내용을 기반으로 요약 정보가 올바른지 확인
+  // Question: 요약정보가 올바른지 확인한다는 것은 스쿱과 토핑을 확인하는 것일까 아니면 총합만 확인하면 될까?
+  const total = screen.getByRole("heading", {
+    name: /Grand total: \$/i,
+  });
+  expect(total).toHaveTextContent("3.50");
 
   // 이용 약관을 수락하고 버튼을 클릭해 주문을 확인
   // 확인 페이지에서 주문 번호가 있는지 확인
