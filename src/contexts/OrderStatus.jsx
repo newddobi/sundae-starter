@@ -11,6 +11,8 @@ export function useOrderStatus() {
       "useOrderStatus는 반드시 OrderStatusProvider 안에 있어야 합니다"
     );
   }
+
+  return contextValue;
 }
 
 export function OrderStatusProvider(props) {
