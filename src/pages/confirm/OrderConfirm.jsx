@@ -1,10 +1,13 @@
 import Button from "react-bootstrap/Button";
 import { useOrderStatus } from "../../contexts/OrderStatus";
+import { useOrderDetails } from "../../contexts/OrderDetails";
 
 export default function OrderConfirm() {
   const { updateOrderStatus } = useOrderStatus();
+  const { resetOrder } = useOrderDetails();
 
   const onCreateNewOrderClick = () => {
+    resetOrder();
     updateOrderStatus("inProgress");
   };
 
