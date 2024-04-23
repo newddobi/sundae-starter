@@ -36,8 +36,8 @@ export default function Options({ optionType }) {
     // 테스트가 끝나는 것과, 네트워크 호출 후 렌더링 하는 작업의 race condition을 막기위해
     // 컴포넌트 언마운트시 axios 호출을 중단한다.
     return () => {
-      console.log("Unmount");
-      // controller.abort();
+      // console.log("Unmount");
+      controller.abort();
     };
   }, [optionType]);
 
