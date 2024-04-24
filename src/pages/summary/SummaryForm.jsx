@@ -9,7 +9,8 @@ export default function SummaryForm() {
   const [tcChecked, setTcChecked] = useState(false);
   const { updateOrderStatus } = useOrderStatus();
 
-  const onConfirmOrderClick = () => {
+  const onConfirmOrderClick = (event) => {
+    event.preventDefault();
     updateOrderStatus("complete");
   };
 

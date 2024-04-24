@@ -12,12 +12,8 @@ export default function OrderSummary() {
     </li>
   ));
 
-  const toppingArray = Object.entries(optionCounts.toppings);
-  const toppingList = toppingArray.map(([key, value]) => (
-    <li key={key}>
-      {value} {key}
-    </li>
-  ));
+  const toppingsArray = Object.keys(optionCounts.toppings);
+  const toppingList = toppingsArray.map((key) => <li key={key}>{key}</li>);
 
   return (
     <div>
