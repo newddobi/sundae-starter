@@ -1,6 +1,6 @@
-import { render, screen, fireEvent } from "../test-utils/testing-library-utils";
 import userEvent from "@testing-library/user-event";
 import App from "../App";
+import { render, screen } from "../test-utils/testing-library-utils";
 
 test("order phases for happy path", async () => {
   const user = userEvent.setup();
@@ -106,4 +106,13 @@ test("order phases for happy path", async () => {
   // 스쿱과 토핑의 네트워크 호출 결과에 대해 명시적으로 await를 하지 않아서 "not wrapped in act()"나 "unmounted component"오류가 뜰 수 있다. 경쟁상태가 발생할 수 있는 모든 경우를 방지하고자 unmount();로 컴포넌트를 명시적으로 언마운트 한다.
   // 컴퓨터의 속도나 다른 조건 때문에 경쟁 상태가 발생하지 않을 수도 있다. 하지만 우리가 명시적으로 await하지 않은 네트워크의 호출의 결과를 기다리고 있다는 것을 알고 있으니 습관적으로 unmount()를 해 클린없 함수를 작동시키는 게 좋다.
   unmount();
+});
+
+test("만약 사용자가 토핑을 주문하지 않는다면 요약 페이지에서 토핑을 삭제한다", async () => {
+  const user = userEvent.setup();
+
+  // 앱 렌더링
+  // 아이스크립 스쿱만 추가한다
+  // 주문 입력 페이지에서 주문 버튼을 찾아 클릭한다
+  // 토핑을 출력하는 헤더가 없는지 확인한다
 });
