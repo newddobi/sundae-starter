@@ -112,7 +112,24 @@ test("만약 사용자가 토핑을 주문하지 않는다면 요약 페이지�
   const user = userEvent.setup();
 
   // 앱 렌더링
+  render(<App />);
+
   // 아이스크립 스쿱만 추가한다
+  const vanillaInput = await screen.findByRole("spinbutton", {
+    name: "Vanilla",
+  });
+  await user.clear(vanillaInput);
+  await user.type(vanillaInput, "1");
+
   // 주문 입력 페이지에서 주문 버튼을 찾아 클릭한다
+  const orderNowButton = screen.getByRole("button", {
+    name: /order now/i,
+  });
+  await user.click(orderNowButton);
+
   // 토핑을 출력하는 헤더가 없는지 확인한다
+  const toppingHeading = screen.queryByRole("heading", {
+    name: /Toppings/i,
+  });
+  expect(toppingHeading).not.toBeInTheDocument();
 });
