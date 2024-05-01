@@ -27,7 +27,11 @@ export function OrderDetailsProvider(props) {
     const newOptionCounts = { ...optionCounts };
 
     // update the copy with the new information
-    newOptionCounts[optionType][itemName] = newItemCount;
+    if (newItemCount) {
+      newOptionCounts[optionType][itemName] = newItemCount;
+    } else {
+      delete newOptionCounts[optionType][itemName];
+    }
 
     // update the state with the updated copy
     setOptionCounts(newOptionCounts);
