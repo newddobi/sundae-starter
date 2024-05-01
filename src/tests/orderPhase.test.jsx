@@ -108,7 +108,7 @@ test("order phases for happy path", async () => {
   unmount();
 });
 
-test("만약 사용자가 토핑을 주문하지 않는다면 요약 페이지에서 토핑을 삭제한다", async () => {
+test("만약 사용자가 토핑을 주문하지 않는다면 요약 페이지에서 토핑 영역을 보여주지 않는다", async () => {
   const user = userEvent.setup();
 
   // 앱 렌더링
@@ -121,6 +121,14 @@ test("만약 사용자가 토핑을 주문하지 않는다면 요약 페이지�
   await user.clear(vanillaInput);
   await user.type(vanillaInput, "1");
 
+  // 테스팅 시에는 최대한 많이 테스트 해보는 것이 좋으니 여러 옵션을 다 넣는다.
+  // vanillaInput에서 await를 하여 이미 렌더링이 됐다는걸 확인했으닌 getByRole을 넣는다
+  const chocolateInput = screen.getByRole("spinbutton", {
+    name: "Chocolate",
+  });
+  await user.clear(chocolateInput);
+  await user.type(chocolateInput, "2");
+
   // 주문 입력 페이지에서 주문 버튼을 찾아 클릭한다
   const orderNowButton = screen.getByRole("button", {
     name: /order now/i,
@@ -128,6 +136,59 @@ test("만약 사용자가 토핑을 주문하지 않는다면 요약 페이지�
   await user.click(orderNowButton);
 
   // 토핑을 출력하는 헤더가 없는지 확인한다
+  const scoopsHeading = screen.getByRole("heading", {
+    name: "Scoops: $6.00",
+  });
+  expect(scoopsHeading).toBeInTheDocument();
+
+  // getByRole을 사용하면, 찾지 못해 오류를 발생시켜 query를 사용한다
+  const toppingHeading = screen.queryByRole("heading", {
+    name: /Toppings/i,
+  });
+  expect(toppingHeading).not.toBeInTheDocument();
+});
+
+test("만약 사용자가 토핑을 주문했다가 다시 취소하면 요약 페이지에서 토핑영역을 보여주지 않는다", async () => {
+  const user = userEvent.setup();
+
+  // 앱 렌더링
+  render(<App />);
+
+  const vanillaInput = await screen.findByRole("spinbutton", {
+    name: "Vanilla",
+  });
+  await user.clear(vanillaInput);
+  await user.type(vanillaInput, "1");
+
+  // scoops를 호출하는 서버와 toppings를 호출하는 서버호출이 다르기 때문에 await find를 호출한다
+  const cherriesCheckbox = await screen.findByRole("checkbox", {
+    name: "Cherries",
+  });
+  await user.click(cherriesCheckbox);
+  expect(cherriesCheckbox).toBeChecked();
+  // 토핑이 제대로 선택 되었는지에 대한 테스트를 한다
+  const toppingsTotal = screen.getByText("Toppings total: $", {
+    exact: false,
+  });
+  expect(toppingsTotal).toHaveTextContent("1.50");
+
+  await user.click(cherriesCheckbox);
+  expect(cherriesCheckbox).not.toBeChecked();
+  // 체크해제 뿐만 아니라 금액도 초기화 되었는지 확인한다
+  expect(toppingsTotal).toHaveTextContent("0.00");
+
+  // 주문 입력 페이지에서 주문 버튼을 찾아 클릭
+  const orderNowButton = screen.getByRole("button", {
+    name: /Order Now/i,
+  });
+  await user.click(orderNowButton);
+
+  // 토핑을 출력하는 헤더가 없는지 확인
+  const scoopsHeading = screen.getByRole("heading", {
+    name: "Scoops: $2.00",
+  });
+  expect(scoopsHeading).toBeInTheDocument();
+
   const toppingHeading = screen.queryByRole("heading", {
     name: /Toppings/i,
   });
