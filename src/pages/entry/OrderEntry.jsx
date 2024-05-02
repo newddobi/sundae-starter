@@ -12,12 +12,18 @@ export default function OrderEntry() {
     updateOrderStatus("review");
   };
 
+  const orderDisabled = totals.scoops === 0;
+
   return (
     <div>
       <Options optionType="scoops" />
       <Options optionType="toppings" />
       <h2>Grand total: {formatCurrency(totals.scoops + totals.toppings)}</h2>
-      <Button onClick={onOrderNowClick} variant="primary">
+      <Button
+        onClick={onOrderNowClick}
+        variant="primary"
+        disabled={orderDisabled}
+      >
         Order Now
       </Button>
     </div>
