@@ -13,7 +13,6 @@ export default function OrderSummary() {
   ));
 
   const toppingsArray = Object.keys(optionCounts.toppings);
-  console.log(toppingsArray);
   const toppingList = toppingsArray.map((key) => <li key={key}>{key}</li>);
 
   return (

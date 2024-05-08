@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { useState } from "react";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
@@ -10,9 +11,25 @@ ScoopOption.propTypes = {
 };
 
 export default function ScoopOption({ name, imagePath }) {
+  const [validated, setValidated] = useState(false);
+
   const { updateItemCount } = useOrderDetails();
-  const handleChange = (e) =>
-    updateItemCount(name, parseInt(e.target.value), "scoops");
+
+  // 음수, 소수점, 10보다 큰 값은 유효하지 않은 값이다
+  const handleChange = (e) => {
+    const valueToNumber = +e.target.value;
+
+    if (
+      Number.isInteger(valueToNumber) &&
+      valueToNumber >= 0 &&
+      valueToNumber < 11
+    ) {
+      setValidated(false);
+      updateItemCount(name, valueToNumber, "scoops");
+    } else {
+      setValidated(true);
+    }
+  };
 
   return (
     <Col xs={12} sm={6} md={4} lg={3} style={{ textAlign: "center" }}>
@@ -34,6 +51,8 @@ export default function ScoopOption({ name, imagePath }) {
             type="number"
             defaultValue={0}
             onChange={handleChange}
+            feedback="You must agree before submitting."
+            isInvalid={validated}
           />
         </Col>
       </Form.Group>

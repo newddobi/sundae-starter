@@ -37,7 +37,7 @@ export default function Options({ optionType }) {
     // 컴포넌트 언마운트시 axios 호출을 중단한다.
     return () => {
       // console.log("Unmount");
-      controller.abort();
+      // controller.abort();
     };
   }, [optionType]);
 
