@@ -51,7 +51,6 @@ export default function ScoopOption({ name, imagePath }) {
             type="number"
             defaultValue={0}
             onChange={handleChange}
-            feedback="You must agree before submitting."
             isInvalid={validated}
           />
         </Col>

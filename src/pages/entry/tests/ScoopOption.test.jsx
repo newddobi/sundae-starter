@@ -24,4 +24,11 @@ test("유효하지 않은 스쿱 값이 입력될 때 입력간을 빨갛게 만
   await user.clear(vanillaInput);
   await user.type(vanillaInput, "20");
   expect(vanillaInput).toHaveClass("is-invalid");
+
+  // 유효하지 않은값 설정 이후 유효한 값을 설정한다.
+  // 우리는 유효성 검사 규칙을 테스트하는 것이 목적이지 react-bootstrap의 기능을 테스트 하는 것이 아니다.
+  // 미묘한 차이지만 기억해두자
+  await user.clear(vanillaInput);
+  await user.type(vanillaInput, "3");
+  expect(vanillaInput).not.toHaveClass("is-invalid");
 });
