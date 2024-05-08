@@ -40,7 +40,9 @@ test("스쿱에 유효하지 않은 숫자가 입력됐을 때 스쿱의 소계�
   render(<Options optionType={"scoops"} />);
 
   // 10보다 큰 값을 설정한다
-  const vanillaInput = await screen.findByRole("spinbutton");
+  const vanillaInput = await screen.findByRole("spinbutton", {
+    name: "Vanilla",
+  });
   await user.clear(vanillaInput);
   await user.type(vanillaInput, "20");
 

@@ -29,7 +29,7 @@ export default function Options({ optionType }) {
         signal: controller.signal,
       })
       .then((response) => setItems(response.data))
-      .catch((error) => {
+      .catch(() => {
         setError(true);
       });
 

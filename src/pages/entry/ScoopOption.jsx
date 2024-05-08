@@ -28,6 +28,7 @@ export default function ScoopOption({ name, imagePath }) {
       updateItemCount(name, valueToNumber, "scoops");
     } else {
       setValidated(true);
+      updateItemCount(name, 0, "scoops");
     }
   };
 
